@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeaseLink MVP - Leasehold Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const { useState } = React;
+        const { Home, FileText, Wrench, MessageSquare, User, Bell, Upload, ChevronRight, AlertCircle, CheckCircle, Clock, Building2, Users, DollarSign, Calendar, Plus, Megaphone, Receipt } = lucide;
+
+        function LeaseholdApp() {
+            const [isLoggedIn, setIsLoggedIn] = useState(false);
+            const [userRole, setUserRole] = useState(null);
+            const [currentView, setCurrentView] = useState('dashboard');
+
+            const Icon = ({ icon: IconComponent, ...props }) => {
+                return React.createElement(IconComponent, props);
+            };
+
+            if (!isLoggedIn) {
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+                        <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full">
+                            <div className="text-center mb-8">
+                                <div className="inline-block p-3 bg-indigo-600 rounded-xl mb-4">
+                                    <Icon icon={Home} className="w-8 h-8 text-white" />
+                                </div>
+                                <h1 className="text-3xl font-bold text-gray-900 mb-2">LeaseLink</h1>
+                                <p className="text-gray-600">Modern Leasehold Management</p>
+                            </div>
+                            <div className="space-y-4">
+                                <button onClick={() => { setUserRole('leaseholder'); setIsLoggedIn(true); }} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-4 px-6 rounded-xl transition">
+                                    Login as Leaseholder
+                                </button>
+                                <button onClick={() => { setUserRole('landlord'); setIsLoggedIn(true); }} className="w-full bg-gray-900 hover:bg-gray-800 text-white font-semibold py-4 px-6 rounded-xl transition">
+                                    Login as Landlord
+                                </button>
+                            </div>
+                            <p className="text-center text-sm text-gray-500 mt-6">MVP Demo</p>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="min-h-screen bg-gray-50">
+                    <header className="bg-white shadow-sm border-b sticky top-0 z-10">
+                        <div className="max-w-7xl mx-auto px-4 py-4">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                    <div className="p-2 bg-indigo-600 rounded-lg">
+                                        <Icon icon={userRole === 'landlord' ? Building2 : Home} className="w-6 h-6 text-white" />
+                                    </div>
+                                    <div>
+                                        <h1 className="text-xl font-bold">LeaseLink</h1>
+                                        <p className="text-xs text-gray-500 capitalize">{userRole} Portal</p>
+                                    </div>
+                                </div>
+                                <button onClick={() => { setIsLoggedIn(false); setUserRole(null); }} className="px-4 py-2 bg-gray-100 rounded-lg">
+                                    Logout
+                                </button>
+                            </div>
+                        </div>
+                    </header>
+                    
+                    <div className="max-w-7xl mx-auto px-4 py-6">
+                        <div className="bg-white rounded-xl p-8 text-center">
+                            <h2 className="text-2xl font-bold mb-4">Welcome to LeaseLink MVP</h2>
+                            <p className="text-gray-600 mb-4">You're logged in as: <strong className="capitalize">{userRole}</strong></p>
+                            <p className="text-sm text-gray-500">Full interactive demo available in the Claude chat interface above.</p>
+                            <p className="text-sm text-gray-500 mt-2">This standalone version shows the login flow.</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<LeaseholdApp />);
+    </script>
+</body>
+</html>
